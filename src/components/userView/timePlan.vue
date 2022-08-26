@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import {ref, watch} from "vue";
+import {ref} from "vue";
 const settingShow = ref(false);
 import {SettingTwoTone} from '@ant-design/icons-vue';
 

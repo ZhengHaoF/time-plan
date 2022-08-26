@@ -18,3 +18,22 @@
 .pt20{
   padding-top: 20px;
 }
+
+/*进入和退出*/
+@keyframes inTo {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes outTo {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
