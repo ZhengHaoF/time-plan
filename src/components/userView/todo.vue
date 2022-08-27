@@ -1,7 +1,7 @@
 <template>
   <a-list item-layout="horizontal" :data-source="data">
     <template #renderItem="{item,index}">
-      <a-list-item>
+      <a-list-item class="TodoItem" key="index">
         <a-list-item-meta :description="item.text" class="list-item">
           <template #title>
             <a-row>
@@ -54,10 +54,23 @@ const data = reactive([{
   text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
   href: "https://www.antdv.com/",
 }, {
-  title: 'Ant Design Title 1',
+  title: 'Ant Design Title 2',
   text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
   href: "https://www.antdv.com/",
-}]);
+}, {
+  title: 'Ant Design Title 3',
+  text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
+  href: "https://www.antdv.com/",
+}, {
+  title: 'Ant Design Title 4',
+  text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
+  href: "https://www.antdv.com/",
+}, {
+  title: 'Ant Design Title 5',
+  text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
+  href: "https://www.antdv.com/",
+}
+]);
 
 /**
  * 添加Todo
@@ -75,13 +88,40 @@ const addTodo = function () {
  */
 const delTodo = function (index) {
   // data.splice(index,1);
-  let dom = document.getElementsByClassName("list-item")[index];
+  let dom = document.getElementsByClassName("TodoItem")[index];
+  let height = dom.offsetHeight
+  let NextDom;
+
   //渐隐效果
-  dom.className = "ant-list-item-meta list-item-out"
+  dom.classList.add("fade-out")
   //一秒后执行
-  setTimeout(() => {
-    data.splice(index, 1)
-  }, 1000);
+
+  //优化一个计时器尝试
+    NextDom = document.getElementsByClassName("TodoItem")[index+1]||null;
+  if (NextDom != null){
+        NextDom.style.cssText = `margin-top: ${height}px;opacity:1!important;transition: all 0s ;`
+      }
+
+
+  //
+
+
+  // setTimeout(() => {
+  //   data.splice(index, 1)
+  //   NextDom = document.getElementsByClassName("TodoItem")[index]||null;
+  //
+  //   dom.classList.remove("fade-out")
+  //   if (NextDom != null){
+  //     NextDom.style.cssText = `margin-top: ${height}px;opacity:1!important;transition: all 0s ;`
+  //   }
+  //   setTimeout(() => {
+  //     if (NextDom != null){
+  //       NextDom.style.cssText = `transition: all 1s ease 0.05s;`
+  //     }
+  //
+  //   }, 50);
+  // }, 850);
+
 }
 </script>
 
@@ -123,6 +163,18 @@ const delTodo = function (index) {
 .del-button {
   opacity: 0;
 }
+/**/
+.fade-out{
+  transition: all 1s;
+  opacity: 0;
 
+}
+.fade-in{
+
+}
+.TodoItem{
+  /*position: relative;*/
+
+}
 
 </style>
