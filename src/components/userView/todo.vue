@@ -1,6 +1,10 @@
 <template>
   <a-list item-layout="horizontal" :data-source="data">
     <template #renderItem="{item,index}">
+
+      <TransitionGroup>
+
+      </TransitionGroup>
       <a-list-item class="TodoItem" key="index">
         <a-list-item-meta :description="item.text" class="list-item">
           <template #title>
@@ -96,31 +100,22 @@ const delTodo = function (index) {
   dom.classList.add("fade-out")
   //一秒后执行
 
-  //优化一个计时器尝试
-    NextDom = document.getElementsByClassName("TodoItem")[index+1]||null;
-  if (NextDom != null){
-        NextDom.style.cssText = `margin-top: ${height}px;opacity:1!important;transition: all 0s ;`
+
+  setTimeout(() => {
+    data.splice(index, 1)
+    NextDom = document.getElementsByClassName("TodoItem")[index]||null;
+
+    dom.classList.remove("fade-out")
+    if (NextDom != null){
+      NextDom.style.cssText = `margin-top: ${height}px;opacity:1!important;transition: all 0s ;`
+    }
+    setTimeout(() => {
+      if (NextDom != null){
+        NextDom.style.cssText = `transition: all 1s ease 0.05s;`
       }
 
-
-  //
-
-
-  // setTimeout(() => {
-  //   data.splice(index, 1)
-  //   NextDom = document.getElementsByClassName("TodoItem")[index]||null;
-  //
-  //   dom.classList.remove("fade-out")
-  //   if (NextDom != null){
-  //     NextDom.style.cssText = `margin-top: ${height}px;opacity:1!important;transition: all 0s ;`
-  //   }
-  //   setTimeout(() => {
-  //     if (NextDom != null){
-  //       NextDom.style.cssText = `transition: all 1s ease 0.05s;`
-  //     }
-  //
-  //   }, 50);
-  // }, 850);
+    }, 50);
+  }, 850);
 
 }
 </script>
