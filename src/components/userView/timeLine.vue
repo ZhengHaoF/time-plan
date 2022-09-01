@@ -33,7 +33,7 @@
 
 <script setup>
 
-import {onMounted, reactive,ref} from "vue";
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import { useStore } from '../../store/index.js';
 import {storeToRefs} from 'pinia'
 
@@ -60,11 +60,11 @@ let data = ref([
   // },
 ]);
 
-onMounted(()=>{
+const getDataTree = function (){
   //生成目录树
   data.value = [];
   timeLineData.value.forEach((timeLineItem,index)=>{
-  data.value.push({
+    data.value.push({
       time:timeLineItem.time,
       todo:[],
     })
@@ -76,10 +76,16 @@ onMounted(()=>{
       })
     })
   })
+}
 
-  console.log(data)
-
+onMounted(()=>{
+  getDataTree();
 })
+
+watch(todoData.value, async (newQuestion, oldQuestion) => {
+  getDataTree();
+})
+
 
 
 </script>

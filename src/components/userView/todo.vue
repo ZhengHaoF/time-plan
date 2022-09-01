@@ -49,6 +49,7 @@
 import {PlusOutlined, DeleteOutlined, EditOutlined} from '@ant-design/icons-vue';
 import { useStore } from '../../store/index.js';
 import {storeToRefs} from 'pinia'
+import {watch} from "vue";
 const store = useStore()
 const {todoData} = storeToRefs(store)
 
@@ -56,7 +57,7 @@ const {todoData} = storeToRefs(store)
  * 添加Todo
  */
 const addTodo = function () {
-  data.push({
+  todoData.value.push({
     title: 'Ant Design Title 1',
     text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
     href: "https://www.antdv.com/",
@@ -67,18 +68,15 @@ const addTodo = function () {
  * 删除Todo
  */
 const delTodo = function (index) {
-  // data.splice(index,1);
   let dom = document.getElementsByClassName("TodoItem")[index];
   let height = dom.offsetHeight
   let NextDom;
-
   //渐隐效果
   dom.classList.add("fade-out")
   //一秒后执行
 
-
   setTimeout(() => {
-    data.splice(index, 1)
+    todoData.value.splice(index, 1)
     NextDom = document.getElementsByClassName("TodoItem")[index]||null;
 
     dom.classList.remove("fade-out")
@@ -92,8 +90,9 @@ const delTodo = function (index) {
 
     }, 50);
   }, 850);
-
 }
+
+
 </script>
 
 <style scoped>
