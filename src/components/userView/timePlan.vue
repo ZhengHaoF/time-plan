@@ -13,7 +13,7 @@
         ToDo进度
       </div>
       <div class="pt20">
-        <a-progress type="circle" :percent="80" :width="80"/>
+        <a-progress type="circle" :percent="todoPlan" :width="80"/>
       </div>
     </a-col>
     <a-col style="position: absolute;bottom: 20px;">
@@ -39,16 +39,17 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {SettingTwoTone} from '@ant-design/icons-vue';
 import {useStore} from '../../store/index.js';
 import {storeToRefs} from 'pinia'
+import {PrefixInteger} from "../../tool/tool.js";
+
 
 const settingShow = ref(false);
-
 const store = useStore()
-const {userTimeInfo} = storeToRefs(store)
-
+const {userTimeInfo,todoData} = storeToRefs(store)
+const todoPlan = ref(0);
 
 
 const setting = function () {
@@ -57,6 +58,24 @@ const setting = function () {
 const settingOk = function () {
   console.log(userTimeInfo.step)
 }
+
+let getTodoPlan = function (){
+  let todoOkNum = 0;
+  todoData.value.forEach((item,index)=>{
+    if (item.ok){
+      todoOkNum++
+    }
+  })
+   return  Math.floor(todoOkNum / todoData.value.length  * 100)
+}
+
+onMounted(()=>{
+  todoPlan.value = getTodoPlan()
+})
+
+watch(todoData.value, async (newQuestion, oldQuestion) => {
+  todoPlan.value = getTodoPlan()
+})
 
 </script>
 

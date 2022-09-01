@@ -49,7 +49,6 @@
 import {PlusOutlined, DeleteOutlined, EditOutlined} from '@ant-design/icons-vue';
 import { useStore } from '../../store/index.js';
 import {storeToRefs} from 'pinia'
-import {watch} from "vue";
 const store = useStore()
 const {todoData} = storeToRefs(store)
 
