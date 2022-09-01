@@ -1,56 +1,67 @@
 <template>
-  <a-list item-layout="horizontal" :data-source="todoData">
-    <template #renderItem="{item,index}">
-      <a-list-item class="TodoItem" key="index">
-        <a-list-item-meta :description="item.text" class="list-item">
-          <template #title>
-            <a-row>
-              <a-col :span="19">
-                <a :href="item.href">{{ item.title }}</a>
-              </a-col>
-              <a-col :span="5">
-                <a-row>
-                  <a-col :span="12">
-                    <!--           编辑按钮-->
-                    <a-button class="del-button" size="small" type="primary" shape="circle">
-                      <template #icon>
-                        <edit-outlined/>
-                      </template>
-                    </a-button>
-                  </a-col>
-                  <a-col :span="12">
-                    <!--            删除按钮-->
-                    <a-button class="del-button" size="small" type="primary" danger shape="circle"
-                              @click="delTodo(index)">
-                      <template #icon>
-                        <delete-outlined/>
-                      </template>
-                    </a-button>
-                  </a-col>
-                </a-row>
-              </a-col>
-            </a-row>
+    <a-row style="height: 100%">
+      <a-col :span="1">
+        <div class="time-line" :style="'height: calc(' + todoPlan + 'vh - 100px)'"> </div>
+        <span>{{todoPlan}}</span>
+      </a-col>
+      <a-col :span="23">
+        <a-list item-layout="horizontal" :data-source="todoData">
+          <template #renderItem="{item,index}">
+            <a-list-item class="TodoItem" key="index">
+              <a-list-item-meta :description="item.text" class="list-item">
+                <template #title>
+                  <a-row>
+                    <a-col :span="19">
+                      <a :href="item.href">{{ item.title }}</a>
+                    </a-col>
+                    <a-col :span="5">
+                      <a-row>
+                        <a-col :span="12">
+                          <!--           编辑按钮-->
+                          <a-button class="del-button" size="small" type="primary" shape="circle">
+                            <template #icon>
+                              <edit-outlined/>
+                            </template>
+                          </a-button>
+                        </a-col>
+                        <a-col :span="12">
+                          <!--            删除按钮-->
+                          <a-button class="del-button" size="small" type="primary" danger shape="circle"
+                                    @click="delTodo(index)">
+                            <template #icon>
+                              <delete-outlined/>
+                            </template>
+                          </a-button>
+                        </a-col>
+                      </a-row>
+                    </a-col>
+                  </a-row>
+                </template>
+                <template #avatar>
+                  <a-checkbox v-model:checked="item.ok"></a-checkbox>
+                </template>
+              </a-list-item-meta>
+            </a-list-item>
           </template>
-          <template #avatar>
-            <a-checkbox v-model:checked="item.ok"></a-checkbox>
-          </template>
-        </a-list-item-meta>
-      </a-list-item>
-    </template>
-  </a-list>
-  <div class="add-button" @click="addTodo">
-    <div style="width: 100%;text-align: center;font-size: 25px">
-      <plus-outlined/>
-    </div>
-  </div>
+        </a-list>
+        <div class="add-button" @click="addTodo">
+          <div style="width: 100%;text-align: center;font-size: 25px">
+            <plus-outlined/>
+          </div>
+        </div>
+      </a-col>
+    </a-row>
+
 </template>
 
 <script setup>
 import {PlusOutlined, DeleteOutlined, EditOutlined} from '@ant-design/icons-vue';
 import { useStore } from '../../store/index.js';
 import {storeToRefs} from 'pinia'
+import {ref, watch,onMounted} from "vue";
 const store = useStore()
 const {todoData} = storeToRefs(store)
+const todoPlan = ref(0);
 
 /**
  * 添加Todo
@@ -91,10 +102,39 @@ const delTodo = function (index) {
   }, 850);
 }
 
+/**
+ * 计算todo完成度
+ */
+const getTodoPlan = function (){
+  let todoOkNum = 0;
+  todoData.value.forEach((item,index)=>{
+    if (item.ok){
+      todoOkNum++
+    }
+  })
+  return  Math.floor(todoOkNum / todoData.value.length  * 100)
+}
+
+onMounted(()=>{
+  todoPlan.value = getTodoPlan();
+  console.log(todoPlan.value)
+})
+
+watch(todoData.value, async (newQuestion, oldQuestion) => {
+  todoPlan.value = getTodoPlan()
+})
+
+
 
 </script>
 
 <style scoped>
+.time-line{
+  background-color: #1890ff;
+  width: 5px;
+  transition: all 0.5s;
+}
+
 .add-button {
   position: absolute;
   bottom: 20px;

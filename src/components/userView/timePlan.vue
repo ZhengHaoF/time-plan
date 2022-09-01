@@ -57,10 +57,10 @@ const setting = function () {
 
 }
 const settingOk = function () {
-  console.log(userTimeInfo.step)
+  settingShow.value = false;
 }
 
-let getTodoPlan = function (){
+const getTodoPlan = function (){
   let todoOkNum = 0;
   todoData.value.forEach((item,index)=>{
     if (item.ok){
@@ -70,7 +70,7 @@ let getTodoPlan = function (){
    return  Math.floor(todoOkNum / todoData.value.length  * 100)
 }
 
-//计算剩余时间
+//计算剩余时间，设定的每日开始时间，减去每日结束时间，就是今天总时长
 const getRunTime = function (){
   return Math.floor((new Date().getTime() - new Date(formatDate(new Date())).getTime()) / (new Date(userTimeInfo.value.time[1].$d) - new Date(userTimeInfo.value.time[0].$d)) * 100 *10) / 10
 }
@@ -80,7 +80,7 @@ onMounted(()=>{
   runTime.value = getRunTime();
   var timer = setInterval(function () {
     runTime.value = getRunTime();
-  }, 1000)
+  }, 5000)
 })
 
 watch(todoData.value, async (newQuestion, oldQuestion) => {
