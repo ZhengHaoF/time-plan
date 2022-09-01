@@ -23,34 +23,41 @@
 
   <a-modal v-model:visible="settingShow" title="设置" @ok="settingOk">
     <a-form layout="vertical">
-      <a-form-item label="时间精度：" >
-        <a-select ref="select" v-model:value="timePrecision" style="width: 260px">
+      <a-form-item label="时间精度：">
+        <a-select ref="select" v-model:value="userTimeInfo.step" style="width: 260px">
           <a-select-option value="10">10</a-select-option>
           <a-select-option value="20">20</a-select-option>
           <a-select-option value="30">30</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="每日工作时间：">
-        <a-time-range-picker :minuteStep="Number(timePrecision)" format="HH:mm"/>
+        <a-time-range-picker v-model:value="userTimeInfo.time" :minuteStep="Number(userTimeInfo.step)" format="HH:mm"/>
       </a-form-item>
     </a-form>
+
   </a-modal>
 </template>
 
 <script setup>
 import {ref} from "vue";
-const settingShow = ref(false);
 import {SettingTwoTone} from '@ant-design/icons-vue';
+import {useStore} from '../../store/index.js';
+import {storeToRefs} from 'pinia'
+
+const settingShow = ref(false);
+
+const store = useStore()
+const {userTimeInfo} = storeToRefs(store)
 
 
-const timePrecision = ref(10);
+
 const setting = function () {
   settingShow.value = true;
 }
 const settingOk = function () {
-  console.log(timePrecision.value)
-  // settingShow.value = false;
+  console.log(userTimeInfo.step)
 }
+
 </script>
 
 <style scoped>

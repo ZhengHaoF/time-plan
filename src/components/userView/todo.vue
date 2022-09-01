@@ -1,10 +1,6 @@
 <template>
-  <a-list item-layout="horizontal" :data-source="data">
+  <a-list item-layout="horizontal" :data-source="todoData">
     <template #renderItem="{item,index}">
-
-      <TransitionGroup>
-
-      </TransitionGroup>
       <a-list-item class="TodoItem" key="index">
         <a-list-item-meta :description="item.text" class="list-item">
           <template #title>
@@ -36,7 +32,7 @@
             </a-row>
           </template>
           <template #avatar>
-            <a-checkbox></a-checkbox>
+            <a-checkbox v-model:checked="item.ok"></a-checkbox>
           </template>
         </a-list-item-meta>
       </a-list-item>
@@ -51,30 +47,10 @@
 
 <script setup>
 import {PlusOutlined, DeleteOutlined, EditOutlined} from '@ant-design/icons-vue';
-import {reactive} from "vue";
-
-const data = reactive([{
-  title: 'Ant Design Title 1',
-  text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
-  href: "https://www.antdv.com/",
-}, {
-  title: 'Ant Design Title 2',
-  text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
-  href: "https://www.antdv.com/",
-}, {
-  title: 'Ant Design Title 3',
-  text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
-  href: "https://www.antdv.com/",
-}, {
-  title: 'Ant Design Title 4',
-  text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
-  href: "https://www.antdv.com/",
-}, {
-  title: 'Ant Design Title 5',
-  text: "Ant Design, a design language for background applications, is refined by Ant UED Team",
-  href: "https://www.antdv.com/",
-}
-]);
+import { useStore } from '../../store/index.js';
+import {storeToRefs} from 'pinia'
+const store = useStore()
+const {todoData} = storeToRefs(store)
 
 /**
  * 添加Todo
