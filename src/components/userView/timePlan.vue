@@ -5,7 +5,7 @@
         一天时间
       </div>
       <div class="pt20">
-        <a-progress type="circle" :percent="70" :width="80"/>
+        <a-progress type="circle" :percent="runTime" :width="80"/>
       </div>
     </a-col>
     <a-col :span="12">
@@ -34,7 +34,6 @@
         <a-time-range-picker v-model:value="userTimeInfo.time" :minuteStep="Number(userTimeInfo.step)" format="HH:mm"/>
       </a-form-item>
     </a-form>
-
   </a-modal>
 </template>
 
@@ -43,17 +42,19 @@ import {onMounted, ref, watch} from "vue";
 import {SettingTwoTone} from '@ant-design/icons-vue';
 import {useStore} from '../../store/index.js';
 import {storeToRefs} from 'pinia'
-import {PrefixInteger} from "../../tool/tool.js";
+import {formatDate} from "../../tool/tool.js";
 
 
 const settingShow = ref(false);
 const store = useStore()
 const {userTimeInfo,todoData} = storeToRefs(store)
 const todoPlan = ref(0);
+const runTime = ref(0);
 
 
 const setting = function () {
   settingShow.value = true;
+
 }
 const settingOk = function () {
   console.log(userTimeInfo.step)
@@ -69,13 +70,23 @@ let getTodoPlan = function (){
    return  Math.floor(todoOkNum / todoData.value.length  * 100)
 }
 
+//计算剩余时间
+const getRunTime = function (){
+  return Math.floor((new Date().getTime() - new Date(formatDate(new Date())).getTime()) / (new Date(userTimeInfo.value.time[1].$d) - new Date(userTimeInfo.value.time[0].$d)) * 100 *10) / 10
+}
+
 onMounted(()=>{
   todoPlan.value = getTodoPlan()
+  runTime.value = getRunTime();
+  var timer = setInterval(function () {
+    runTime.value = getRunTime();
+  }, 1000)
 })
 
 watch(todoData.value, async (newQuestion, oldQuestion) => {
   todoPlan.value = getTodoPlan()
 })
+
 
 </script>
 
