@@ -7,7 +7,7 @@ export const useStore = defineStore('main', {
     state() {
         return {
             userTimeInfo: {
-                time:[ dayjs("2022-09-01T01:00:00.394Z"), dayjs("2022-09-01T12:30:00.570Z") ],
+                time:[ dayjs("2022-09-01 09:00"), dayjs("2022-09-01 17:30") ],
                 //跨度
                 step: 10
             },

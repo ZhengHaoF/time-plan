@@ -1,7 +1,7 @@
 <template>
     <a-row style="height: 100%">
       <a-col :span="1">
-        <div class="time-line" :style="'height: calc(' + todoPlan + 'vh - 100px)'"> </div>
+        <div class="time-line" :style="'height: calc(' + todoPlan + '% - 30px);background-color:' + (todoPlan === 100?'#52c41a':'#1890ff')"> </div>
         <span>{{todoPlan}}</span>
       </a-col>
       <a-col :span="23">
@@ -130,6 +130,7 @@ watch(todoData.value, async (newQuestion, oldQuestion) => {
 
 <style scoped>
 .time-line{
+  border-radius: 5px  ;
   background-color: #1890ff;
   width: 5px;
   transition: all 0.5s;
@@ -176,7 +177,6 @@ watch(todoData.value, async (newQuestion, oldQuestion) => {
 .fade-out{
   transition: all 1s;
   opacity: 0;
-
 }
 .fade-in{
 
